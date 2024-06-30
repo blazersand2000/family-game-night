@@ -6,13 +6,17 @@
         {{ todo.text }}
       </li>
     </ul>
+    <button @click="Test">Test Function</button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useTodoStore } from '@/stores/useTodoStore'
+import { useGameApi } from '@/composables/useGameApi'
+import { useLogger } from './composables/useLogger'
 
+const logger = useLogger()
 const todoStore = useTodoStore()
 // Use computed to create a computedRef for todos
 const todos = computed(() => todoStore.todos)
@@ -24,5 +28,11 @@ const addNewTodo = () => {
     addTodo(newTodo.value.trim())
     newTodo.value = ''
   }
+}
+
+const gameApi = useGameApi()
+const Test = async () => {
+  var result = await gameApi.createGame({ text: 'Test Game' })
+  logger.log(result)
 }
 </script>
