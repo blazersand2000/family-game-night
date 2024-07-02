@@ -23,7 +23,7 @@ const auth = getAuth(app)
 const functions = getFunctions(app) // Initialize Functions
 
 // Connect to Firebase Emulators if running in a development environment
-if (location.hostname === 'localhost') {
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
   // Firestore Emulator
   connectFirestoreEmulator(db, 'localhost', 8080)
   // Auth Emulator

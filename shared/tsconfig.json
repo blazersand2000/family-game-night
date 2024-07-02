@@ -1,0 +1,16 @@
+{
+   "compilerOptions": {
+      "outDir": "./dist",
+      "rootDir": "./",
+      "composite": true,
+      "declaration": true,
+      "declarationMap": true,
+      "sourceMap": true,
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "target": "esnext",
+      "module": "commonjs"
+   },
+   "include": ["**/*.ts"]
+}
