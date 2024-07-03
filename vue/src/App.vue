@@ -6,7 +6,8 @@
         {{ todo.text }}
       </li>
     </ul>
-    <button @click="Test">Test Function</button>
+    <button @click="Create">Test Create Game</button>
+    <button @click="Join">Test Join Game</button>
   </div>
 </template>
 
@@ -31,8 +32,19 @@ const addNewTodo = () => {
 }
 
 const gameApi = useGameApi()
-const Test = async () => {
-  var result = await gameApi.createGame({ text: 'Test Game' })
-  logger.log(result)
+
+const Create = async () => {
+  var createResult = await gameApi.createGame({
+    gameId: '123'
+  })
+  logger.log(createResult)
+}
+
+const Join = async () => {
+  var joinResult = await gameApi.joinGame({
+    gameId: '123',
+    userId: 'user789'
+  })
+  logger.log(joinResult)
 }
 </script>

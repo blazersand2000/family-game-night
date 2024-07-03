@@ -1,22 +1,24 @@
-import { CreateGameRequest } from "shared/requests"
+import { AllRequests, GenericRequest, GenericResponse, RequestId } from "shared/shared"
+import { CreateGameHandler } from "./handlers/createGameHandler"
+import { JoinGameHandler } from "./handlers/joinGameHandler"
 
-interface RequestHandler<T> {
-   canHandle(request: any): request is T
-   handle(request: T): Promise<any>
+// Define a base handler interface
+export interface RequestHandler<TRequest, TResponse> {
+   handle(request: GenericRequest<TRequest>): Promise<GenericResponse<TResponse>>
 }
 
-class CreateGameHandler implements RequestHandler<CreateGameRequest> {
-   canHandle(request: any): request is CreateGameRequest {
-      return request.type === "createGame"
-   }
-
-   async handle(request: CreateGameRequest): Promise<any> {
-      // Handle create game logic
-      return { result: "Game created, yayh!" }
-   }
+// Map request IDs to their handlers
+export const handlers: Record<RequestId, RequestHandler<AllRequests, any>> = {
+   CreateGame: new CreateGameHandler(),
+   JoinGame: new JoinGameHandler(),
 }
 
-export const handlers: RequestHandler<any>[] = [
-   new CreateGameHandler(),
-   // Add other handlers here
-]
+// Function to route requests to the correct handler
+export async function routeRequest(genericRequest: GenericRequest<AllRequests>): Promise<any> {
+   const handler = handlers[genericRequest.type]
+   if (!handler) {
+      throw new Error(`Handler for request type '${genericRequest.type}' not found.`)
+   }
+   console.log(`${handler.constructor.name} handling request of type '${genericRequest.type}'`)
+   return handler.handle(genericRequest)
+}
