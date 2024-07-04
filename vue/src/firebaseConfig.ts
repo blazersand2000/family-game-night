@@ -15,12 +15,12 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
+export const firebaseApp = initializeApp(firebaseConfig)
 
 // Initialize Firebase services
-const db = getFirestore(app)
-const auth = getAuth(app)
-const functions = getFunctions(app) // Initialize Functions
+const db = getFirestore(firebaseApp)
+const auth = getAuth(firebaseApp)
+const functions = getFunctions(firebaseApp) // Initialize Functions
 
 // Connect to Firebase Emulators if running in a development environment
 if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {

@@ -1,7 +1,9 @@
+import { GameType } from "./models/gameType"
 import type { RequestResponsePair } from "./shared"
 
 export interface CreateGameRequest {
-   gameId: string
+   title: string
+   type: GameType
 }
 
 export interface CreateGameResponse {
