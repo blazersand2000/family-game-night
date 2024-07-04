@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <input v-model="newTodo" @keyup.enter="addNewTodo" placeholder="Add a new todo" />
     <ul>
@@ -9,6 +9,25 @@
     <button @click="Create">Test Create Game</button>
     <button @click="Join">Test Join Game</button>
   </div>
+</template> -->
+
+<template>
+  <div>
+    <ThemeManager />
+    <v-layout class="rounded rounded-md">
+      <v-app-bar title="Application bar"></v-app-bar>
+
+      <v-navigation-drawer>
+        <v-list>
+          <v-list-item title="Navigation drawer"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <v-main class="d-flex align-center justify-center" style="min-height: 300px">
+        Main Content
+      </v-main>
+    </v-layout>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -16,6 +35,8 @@ import { computed, ref } from 'vue'
 import { useTodoStore } from '@/stores/useTodoStore'
 import { useGameApi } from '@/composables/useGameApi'
 import { useLogger } from './composables/useLogger'
+import { GameType } from 'shared/models/gameType'
+import ThemeManager from './components/ThemeManager.vue'
 
 const logger = useLogger()
 const todoStore = useTodoStore()
@@ -35,7 +56,7 @@ const gameApi = useGameApi()
 
 const Create = async () => {
   var createResult = await gameApi.createGame({
-    gameId: '123'
+    type: GameType.TicTacToe
   })
   logger.log(createResult)
 }
