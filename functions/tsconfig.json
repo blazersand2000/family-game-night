@@ -9,10 +9,11 @@
       "target": "es2017",
       "baseUrl": ".",
       "paths": {
-         "shared/*": ["../shared/*"]
+         "shared/*": ["../shared/*"],
+         "@/*": ["./src/*"]
       }
    },
    "compileOnSave": true,
-   "include": ["src"],
+   "include": ["src/**/*"],
    "references": [{ "path": "../shared/tsconfig.json" }]
 }

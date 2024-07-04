@@ -5,10 +5,9 @@ export interface GenericRequest<TRequest> {
    payload: TRequest
 }
 
-export interface GenericResponse<TResponse> {
-   success: boolean
-   payload: TResponse
-}
+export type GenericResponse<TResponse> =
+   | { success: true; payload: TResponse }
+   | { success: false; error: string }
 
 export type AllRequests = {
    [K in keyof RequestResponseMapping]: RequestResponseMapping[K]["request"]
