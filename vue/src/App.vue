@@ -35,8 +35,8 @@ import { computed, ref } from 'vue'
 import { useTodoStore } from '@/stores/useTodoStore'
 import { useGameApi } from '@/composables/useGameApi'
 import { useLogger } from './composables/useLogger'
-import { GameType } from 'shared/models/gameType'
 import ThemeManager from './components/ThemeManager.vue'
+import { GameType } from 'shared/models/gameType'
 
 const logger = useLogger()
 const todoStore = useTodoStore()

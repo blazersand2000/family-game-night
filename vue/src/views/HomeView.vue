@@ -59,3 +59,4 @@ const login = async () => {
   await anonymousLogin.value()
 }
 </script>
+shared/src/models/gameType

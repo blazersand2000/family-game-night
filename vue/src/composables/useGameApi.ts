@@ -1,5 +1,5 @@
 import callFunction from '@/FunctionCaller'
-import type { CreateGameRequest, JoinGameRequest } from 'shared/requests'
+import type { CreateGameRequest, JoinGameRequest } from 'shared/requests/game'
 
 export function useGameApi() {
   // Initialize Firebase Functions

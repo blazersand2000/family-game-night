@@ -1,4 +1,4 @@
-import type { RequestResponseMapping } from "./requests"
+import type { RequestResponseMapping } from "./requests/requests"
 
 export interface GenericRequest<TRequest> {
    type: RequestId

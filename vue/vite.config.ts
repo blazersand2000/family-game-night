@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      shared: path.resolve(__dirname, '../shared') // Add the alias for 'shared'
+      shared: path.resolve(__dirname, '../shared/src') // Add the alias for 'shared'
     }
   }
 })

@@ -1,4 +1,4 @@
-import { JoinGameRequest, JoinGameResponse } from "shared/requests"
+import { JoinGameRequest, JoinGameResponse } from "shared/requests/game"
 import { GenericRequest, GenericResponse } from "shared/shared"
 import { RequestHandler } from "src/mediation"
 

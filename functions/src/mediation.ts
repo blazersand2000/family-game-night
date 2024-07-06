@@ -1,6 +1,7 @@
 import { AllRequests, GenericRequest, GenericResponse, RequestId } from "shared/shared"
 import { CreateGameHandler } from "./handlers/createGameHandler"
 import { JoinGameHandler } from "./handlers/joinGameHandler"
+import { TicTacToe_MakeMoveHandler } from "./handlers/tictactoe/makeMoveHandler"
 
 // Define a base handler interface
 export interface RequestHandler<TRequest, TResponse> {
@@ -11,6 +12,7 @@ export interface RequestHandler<TRequest, TResponse> {
 export const handlers: Record<RequestId, RequestHandler<AllRequests, any>> = {
    CreateGame: new CreateGameHandler(),
    JoinGame: new JoinGameHandler(),
+   TicTacToe_MakeMove: new TicTacToe_MakeMoveHandler(),
 }
 
 // Function to route requests to the correct handler
