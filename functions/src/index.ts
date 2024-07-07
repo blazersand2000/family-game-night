@@ -6,15 +6,23 @@ admin.initializeApp()
 import * as functions from "firebase-functions"
 import { routeRequest } from "./mediation"
 import { GenericRequest, AllRequests } from "shared/shared"
+import { Settings } from "firebase-admin/firestore"
 
 const db = admin.firestore()
+
+var settings: Settings = {
+   ignoreUndefinedProperties: true,
+}
 // Check if running in the Firebase emulator environment
 if (process.env.FUNCTIONS_EMULATOR === "true") {
-   db.settings({
+   settings = {
+      ...settings,
       host: "localhost:8080",
       ssl: false,
-   })
+   }
 }
+
+db.settings(settings)
 
 export const gameAction = functions.https.onCall(
    async (data: GenericRequest<AllRequests>, context: functions.https.CallableContext) => {
