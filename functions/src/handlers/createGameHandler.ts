@@ -1,9 +1,9 @@
 import { GenericRequest, GenericResponse } from "shared/shared"
 import { RequestHandler } from "@/mediation"
 import { createGame } from "../services/gameDataService"
-import { GameType } from "shared/models/gameType"
 import { TicTacToe } from "shared/models/games/tictactoe"
 import { CreateGameRequest, CreateGameResponse } from "shared/requests/game"
+import { GameType } from "shared/models/gameType"
 
 export class CreateGameHandler implements RequestHandler<CreateGameRequest, CreateGameResponse> {
    async handle(

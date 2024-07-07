@@ -1,3 +1,4 @@
+require("module-alias/register")
 // This is the entry point for the Firebase Functions
 import * as admin from "firebase-admin" // Import the 'admin' module
 admin.initializeApp()

@@ -1,8 +1,8 @@
 import { GenericRequest, GenericResponse } from "shared/shared"
 import { RequestHandler } from "@/mediation"
-import { updateGameData } from "@/services/gameDataService"
 import { TicTacToe_MakeMoveRequest, TicTacToe_MakeMoveResponse } from "shared/requests/tictactoe"
 import { Player, TicTacToe } from "shared/models/games/tictactoe"
+import { updateGameData } from "@/services/gameDataService"
 
 export class TicTacToe_MakeMoveHandler
    implements RequestHandler<TicTacToe_MakeMoveRequest, TicTacToe_MakeMoveResponse>

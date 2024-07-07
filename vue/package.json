@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "cd ../shared && npm run build",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -15,6 +16,7 @@
   "dependencies": {
     "@vueuse/core": "^10.11.0",
     "firebase": "^10.12.3",
+    "module-alias": "^2.2.3",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",

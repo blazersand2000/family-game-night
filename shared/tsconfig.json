@@ -1,8 +1,9 @@
 {
    "compilerOptions": {
       "outDir": "./dist",
-      "rootDir": "./",
+      "rootDir": "./src",
       "composite": true,
+      "baseUrl": ".",
       "declaration": true,
       "declarationMap": true,
       "sourceMap": true,
@@ -12,5 +13,5 @@
       "target": "esnext",
       "module": "commonjs"
    },
-   "include": ["src/**/*.ts"]
+   "include": ["src/**/*"]
 }

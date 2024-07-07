@@ -1,12 +1,8 @@
 <template>
   <main>
-    <ul>
-      <li v-for="game in games" :key="game.id">
-        <span>
-          {{ game.title }}
-        </span>
-      </li>
-    </ul>
+    <v-card class="mx-auto" max-width="300">
+      <v-list :items="games" item-title="title" item-value="id"></v-list>
+    </v-card>
     <div>
       <button @click="Create">Test Create Game</button>
       <button @click="Join">Test Join Game</button>
@@ -59,4 +55,3 @@ const login = async () => {
   await anonymousLogin.value()
 }
 </script>
-shared/src/models/gameType

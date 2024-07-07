@@ -3,17 +3,19 @@
       "module": "commonjs",
       "noImplicitReturns": true,
       "noUnusedLocals": true,
-      "outDir": "lib",
+      "outDir": "./lib",
+      "rootDir": "./src",
+      "composite": true,
       "sourceMap": true,
       "strict": true,
       "target": "es2017",
       "baseUrl": ".",
       "paths": {
-         "shared/*": ["../shared/src/*"],
+         "shared/*": ["../shared/dist/*"],
          "@/*": ["./src/*"]
       }
    },
    "compileOnSave": true,
-   "include": ["src/**/*"],
-   "references": [{ "path": "../shared/tsconfig.json" }]
+   "references": [{ "path": "../shared" }],
+   "include": ["src/**/*"]
 }
