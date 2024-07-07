@@ -1,8 +1,9 @@
 <template>
-  <main>
+  <div>
     <v-card class="mx-auto" max-width="300">
-      <v-list :items="games" item-title="title" item-value="id"></v-list>
+      <v-list :items="gamesList"></v-list>
     </v-card>
+
     <div>
       <button @click="Create">Test Create Game</button>
       <button @click="Join">Test Join Game</button>
@@ -19,11 +20,11 @@
     </v-card> -->
 
     <div v-if="error">Error: {{ error.message }}</div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useGameApi } from '@/composables/useGameApi'
 import { useLogger } from '@/composables/useLogger'
 import { useGameStore } from '@/stores/useGameStore'
@@ -34,6 +35,14 @@ const logger = useLogger()
 const gameApi = useGameApi()
 const { games } = toRefs(useGameStore())
 const { auth, currentUser, login: anonymousLogin, error } = toRefs(useAuthStore())
+
+const gamesList = computed(() => {
+  return games.value.map((game) => ({
+    title: game.title,
+    value: game.id,
+    props: { to: { name: 'game', params: { gameId: game.id } } }
+  }))
+})
 
 const Create = async () => {
   var createResult = await gameApi.createGame({

@@ -60,19 +60,13 @@ export class TicTacToe_MakeMoveHandler
                }
             }
 
-            const updatedBoard = current.board.map((row, x) =>
-               row.map((cell, y) =>
-                  x === request.payload.location.x && y === request.payload.location.y
-                     ? current.playerTurn
-                     : cell
-               )
-            )
-            const updatedData: TicTacToe = {
-               board: updatedBoard,
-               playerTurn: current.playerTurn === "X" ? "O" : "X",
-               winner: this.getWinner(current),
-            }
-            update(updatedData)
+            current.board[request.payload.location.row][request.payload.location.col] =
+               request.payload.player
+            current.playerTurn = current.playerTurn === "X" ? "O" : "X"
+            current.winner = this.getWinner(current)
+
+            // feels like we should make a copy of current and update the copy, but I expect that will get tedious when updating larger entities
+            update(current)
 
             return {
                success: true,
@@ -91,15 +85,18 @@ export class TicTacToe_MakeMoveHandler
 
    isInBounds(move: TicTacToe_MakeMoveRequest): boolean {
       return (
-         move.location.x >= 0 && move.location.x < 3 && move.location.y >= 0 && move.location.y < 3
+         move.location.col >= 0 &&
+         move.location.col < 3 &&
+         move.location.row >= 0 &&
+         move.location.row < 3
       )
    }
 
    isLocationEmpty(gameData: TicTacToe, move: TicTacToe_MakeMoveRequest): boolean {
-      return gameData.board[move.location.x][move.location.y] === undefined
+      return !gameData.board[move.location.row][move.location.col]
    }
 
-   getWinner(gameData: TicTacToe): Player | undefined {
+   getWinner(gameData: TicTacToe): Player | null {
       // check if any player got 3 in a row
       const board = gameData.board
       const winningCombinations = [
@@ -125,6 +122,6 @@ export class TicTacToe_MakeMoveHandler
          }
       }
 
-      return undefined
+      return null
    }
 }

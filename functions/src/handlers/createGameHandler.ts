@@ -12,13 +12,13 @@ export class CreateGameHandler implements RequestHandler<CreateGameRequest, Crea
       if (request.payload.type === GameType.TicTacToe) {
          // TODO: get rid of nested arrays firestore doesn't support them
          const gameData: TicTacToe = {
-            board: [
-               [undefined, undefined, undefined],
-               [undefined, undefined, undefined],
-               [undefined, undefined, undefined],
-            ],
+            board: {
+               0: [null, null, null],
+               1: [null, null, null],
+               2: [null, null, null],
+            },
             playerTurn: "X",
-            winner: undefined,
+            winner: null,
          }
 
          try {
