@@ -14,10 +14,6 @@
     <div>
       {{ currentUser === null ? 'Not logged in' : 'Logged in' }}
     </div>
-    <!-- <v-card width="300">
-      <v-card-title>Game</v-card-title>
-      <v-card-text> {{ currentUser }} </v-card-text>
-    </v-card> -->
 
     <div v-if="error">Error: {{ error.message }}</div>
   </div>
@@ -38,7 +34,7 @@ const { auth, currentUser, login: anonymousLogin, error } = toRefs(useAuthStore(
 
 const gamesList = computed(() => {
   return games.value.map((game) => ({
-    title: game.title,
+    title: game.id,
     value: game.id,
     props: { to: { name: 'game', params: { gameId: game.id } } }
   }))

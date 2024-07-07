@@ -8,13 +8,23 @@
       <div>
         <h3>Created: {{ createdAt }}</h3>
       </div>
+      <div>
+        <h3>Is date: {{ isADate }}</h3>
+      </div>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <GameBoard :gameId="gameId" />
     </v-col>
   </v-row>
 </template>
 
 <script setup lang="ts">
+import GameBoard from '@/components/GameBoard.vue'
 import { useGameStore } from '@/stores/useGameStore'
 import { useDateFormat } from '@vueuse/core'
+import { computed } from 'vue'
 
 const props = defineProps<{
   gameId: string
@@ -22,5 +32,6 @@ const props = defineProps<{
 
 const gameStore = useGameStore()
 const game = gameStore.game(props.gameId)
-const createdAt = useDateFormat(game.value?.createdAt, 'YYYY-MM-DD HH:mm:ss')
+const createdAt = computed(() => useDateFormat(game.value?.createdAt, 'YYYY-MM-DD HH:mm:ss'))
+const isADate = computed(() => game.value?.createdAt instanceof Date)
 </script>

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "prebuild": "cd ../shared && npm run build",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
