@@ -13,6 +13,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const vuetify = createVuetify({
   components,
@@ -28,5 +29,8 @@ app.use(VueFire, {
   firebaseApp,
   modules: [VueFireAuth()]
 })
+
+const authStore = useAuthStore()
+authStore.initAuth()
 
 app.mount('#app')

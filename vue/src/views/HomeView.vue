@@ -7,9 +7,6 @@
     <div>
       <button @click="Create">Test Create Game</button>
       <button @click="Join">Test Join Game</button>
-      <div>
-        <v-btn variant="tonal" @click="login">Login</v-btn>
-      </div>
     </div>
     <div>
       {{ currentUser === null ? 'Not logged in' : 'Logged in' }}
@@ -30,7 +27,7 @@ import { GameType } from 'shared/models/gameType'
 const logger = useLogger()
 const gameApi = useGameApi()
 const { games } = toRefs(useGameStore())
-const { auth, currentUser, login: anonymousLogin, error } = toRefs(useAuthStore())
+const { auth, currentUser, error } = toRefs(useAuthStore())
 
 const gamesList = computed(() => {
   return games.value.map((game) => ({
@@ -54,9 +51,5 @@ const Join = async () => {
     userId: 'user789'
   })
   logger.log(joinResult)
-}
-
-const login = async () => {
-  await anonymousLogin.value()
 }
 </script>
