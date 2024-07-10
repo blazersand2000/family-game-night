@@ -1,6 +1,7 @@
 import { getFirestore, FieldValue, WithFieldValue, DocumentData } from "firebase-admin/firestore"
 import { CreateGameRequest } from "shared/requests/game"
 import { ReceivedRequest } from "@/mediation"
+import { generateSecureUniqueId } from "./idGenerationService"
 
 const db = getFirestore()
 
@@ -8,13 +9,15 @@ export async function createGame<T extends WithFieldValue<DocumentData>>(
    request: ReceivedRequest<CreateGameRequest>,
    gameData: T
 ): Promise<string> {
+   const id = generateSecureUniqueId()
+
    const batch = db.batch()
 
-   const gameRef = db.collection("games").doc()
+   const gameRef = db.collection("games").doc(id)
    const gameDataRef = db.collection("gameData").doc(gameRef.id)
 
    const game = {
-      ...request,
+      ...request.payload,
       createdAt: FieldValue.serverTimestamp(),
       gameManagerId: request.context.auth!.uid,
       playerIds: [request.context.auth!.uid],

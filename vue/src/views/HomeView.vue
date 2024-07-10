@@ -39,7 +39,6 @@ const gamesList = computed(() => {
 
 const Create = async () => {
   var createResult = await gameApi.createGame({
-    title: 'Tic Tac Toe',
     type: GameType.TicTacToe
   })
   logger.log(createResult)
