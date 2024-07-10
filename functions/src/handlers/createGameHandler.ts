@@ -1,5 +1,5 @@
-import { GenericRequest, GenericResponse } from "shared/shared"
-import { RequestHandler } from "@/mediation"
+import { GenericResponse } from "shared/shared"
+import { ReceivedRequest, RequestHandler } from "@/mediation"
 import { createGame } from "../services/gameDataService"
 import { TicTacToe } from "shared/models/games/tictactoe"
 import { CreateGameRequest, CreateGameResponse } from "shared/requests/game"
@@ -7,7 +7,7 @@ import { GameType } from "shared/models/gameType"
 
 export class CreateGameHandler implements RequestHandler<CreateGameRequest, CreateGameResponse> {
    async handle(
-      request: GenericRequest<CreateGameRequest>
+      request: ReceivedRequest<CreateGameRequest>
    ): Promise<GenericResponse<CreateGameResponse>> {
       if (request.payload.type === GameType.TicTacToe) {
          // TODO: get rid of nested arrays firestore doesn't support them

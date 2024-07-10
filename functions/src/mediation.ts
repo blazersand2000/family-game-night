@@ -1,11 +1,17 @@
+import * as functions from "firebase-functions"
 import { AllRequests, GenericRequest, GenericResponse, RequestId } from "shared/shared"
 import { CreateGameHandler } from "./handlers/createGameHandler"
 import { JoinGameHandler } from "./handlers/joinGameHandler"
 import { TicTacToe_MakeMoveHandler } from "./handlers/tictactoe/makeMoveHandler"
 
+// Request with context
+export interface ReceivedRequest<TRequest> extends GenericRequest<TRequest> {
+   context: functions.https.CallableContext
+}
+
 // Define a base handler interface
 export interface RequestHandler<TRequest, TResponse> {
-   handle(request: GenericRequest<TRequest>): Promise<GenericResponse<TResponse>>
+   handle(request: ReceivedRequest<TRequest>): Promise<GenericResponse<TResponse>>
 }
 
 // Map request IDs to their handlers
@@ -16,11 +22,11 @@ export const handlers: Record<RequestId, RequestHandler<AllRequests, any>> = {
 }
 
 // Function to route requests to the correct handler
-export async function routeRequest(genericRequest: GenericRequest<AllRequests>): Promise<any> {
-   const handler = handlers[genericRequest.type]
+export async function routeRequest(request: ReceivedRequest<AllRequests>): Promise<any> {
+   const handler = handlers[request.type]
    if (!handler) {
-      throw new Error(`Handler for request type '${genericRequest.type}' not found.`)
+      throw new Error(`Handler for request type '${request.type}' not found.`)
    }
-   console.log(`${handler.constructor.name} handling request of type '${genericRequest.type}'`)
-   return handler.handle(genericRequest)
+   console.log(`${handler.constructor.name} handling request of type '${request.type}'`)
+   return handler.handle(request)
 }

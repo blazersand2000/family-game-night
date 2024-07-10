@@ -2,9 +2,9 @@
   <v-row justify-center>
     <v-col>
       <div><h1>Current Game: Tic Tac Toe</h1></div>
-      <div>
+      <!-- <div>
         <h3>Name: {{ game?.title }}</h3>
-      </div>
+      </div> -->
       <div>
         <h3>Created: {{ createdAt }}</h3>
       </div>

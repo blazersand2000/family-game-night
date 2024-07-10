@@ -1,5 +1,5 @@
-import { GenericRequest, GenericResponse } from "shared/shared"
-import { RequestHandler } from "@/mediation"
+import { GenericResponse } from "shared/shared"
+import { ReceivedRequest, RequestHandler } from "@/mediation"
 import { TicTacToe_MakeMoveRequest, TicTacToe_MakeMoveResponse } from "shared/requests/tictactoe"
 import { Player, TicTacToe } from "shared/models/games/tictactoe"
 import { updateGameData } from "@/services/gameDataService"
@@ -8,7 +8,7 @@ export class TicTacToe_MakeMoveHandler
    implements RequestHandler<TicTacToe_MakeMoveRequest, TicTacToe_MakeMoveResponse>
 {
    async handle(
-      request: GenericRequest<TicTacToe_MakeMoveRequest>
+      request: ReceivedRequest<TicTacToe_MakeMoveRequest>
    ): Promise<GenericResponse<TicTacToe_MakeMoveResponse>> {
       try {
          var result = await this.makeMove(request)
@@ -21,7 +21,7 @@ export class TicTacToe_MakeMoveHandler
       }
    }
 
-   private async makeMove(request: GenericRequest<TicTacToe_MakeMoveRequest>) {
+   private async makeMove(request: ReceivedRequest<TicTacToe_MakeMoveRequest>) {
       return await updateGameData<TicTacToe, GenericResponse<TicTacToe_MakeMoveResponse>>(
          request.payload.gameId,
          (current, update) => {
