@@ -22,7 +22,7 @@ export class CreateGameHandler implements RequestHandler<CreateGameRequest, Crea
          }
 
          try {
-            var newGameId = await createGame(request.payload, gameData)
+            var newGameId = await createGame(request, gameData)
             return { success: true, payload: { gameId: newGameId } }
          } catch (error) {
             console.log(error)

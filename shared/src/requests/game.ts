@@ -1,7 +1,6 @@
 import { GameType } from "../models/gameType"
 
 export interface CreateGameRequest {
-   title: string
    type: GameType
 }
 

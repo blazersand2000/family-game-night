@@ -1,10 +1,11 @@
 import { getFirestore, FieldValue, WithFieldValue, DocumentData } from "firebase-admin/firestore"
 import { CreateGameRequest } from "shared/requests/game"
+import { ReceivedRequest } from "@/mediation"
 
 const db = getFirestore()
 
 export async function createGame<T extends WithFieldValue<DocumentData>>(
-   gameRequest: CreateGameRequest,
+   request: ReceivedRequest<CreateGameRequest>,
    gameData: T
 ): Promise<string> {
    const batch = db.batch()
@@ -13,8 +14,10 @@ export async function createGame<T extends WithFieldValue<DocumentData>>(
    const gameDataRef = db.collection("gameData").doc(gameRef.id)
 
    const game = {
-      ...gameRequest,
+      ...request,
       createdAt: FieldValue.serverTimestamp(),
+      gameManagerId: request.context.auth!.uid,
+      playerIds: [request.context.auth!.uid],
    }
 
    batch.set(gameRef, game)
