@@ -11,13 +11,21 @@ import { firebaseApp } from './firebaseConfig'
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAuthStore } from '@/stores/useAuthStore'
 
 const vuetify = createVuetify({
   components,
-  directives
+  directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
+  }
 })
 
 const app = createApp(App)
@@ -31,6 +39,7 @@ app.use(VueFire, {
 })
 
 const authStore = useAuthStore()
-authStore.initAuth()
 
-app.mount('#app')
+authStore.initAuth().then(() => {
+  app.mount('#app')
+})

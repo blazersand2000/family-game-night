@@ -20,7 +20,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col><InviteToGame /></v-col>
+      <v-col><InviteToGame v-if="game" :gameType="game.type" :gameId="gameId" /></v-col>
     </v-row>
   </v-container>
 </template>
