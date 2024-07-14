@@ -19,7 +19,12 @@
 
       <v-navigation-drawer>
         <v-list>
-          <v-list-item title="Navigation drawer"></v-list-item>
+          <v-list-item title="Navigation drawer"
+            >Auth initialized: {{ authStore.isAuthInitialized }}</v-list-item
+          >
+          <v-list-item title="Navigation drawer"
+            >Logged in? {{ !!authStore.currentUser }}</v-list-item
+          >
         </v-list>
       </v-navigation-drawer>
 
@@ -37,7 +42,9 @@ import { useGameApi } from '@/composables/useGameApi'
 import { useLogger } from './composables/useLogger'
 import ThemeManager from './components/ThemeManager.vue'
 import { GameType } from 'shared/models/gameType'
+import { useAuthStore } from '@/stores/useAuthStore'
 
+const authStore = useAuthStore()
 const logger = useLogger()
 const todoStore = useTodoStore()
 // Use computed to create a computedRef for todos

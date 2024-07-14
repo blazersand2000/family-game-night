@@ -1,12 +1,19 @@
 <template>
-  <v-sheet class="mx-auto" width="300">
+  <v-card class="mx-auto" width="300" title="Hello there!" subtitle="Enter your name to continue">
     <v-form @submit.prevent="handleSubmit">
-      <v-text-field v-model="firstName" :rules="rules" label="First name"></v-text-field>
-      <v-btn :loading="isSubmitting" :disabled="isSubmitting" class="mt-2" type="submit" block>
+      <v-text-field v-model="firstName" :rules="rules" variant="outlined"></v-text-field>
+      <v-btn
+        :loading="isSubmitting"
+        :disabled="isSubmitting"
+        class="mt-2"
+        type="submit"
+        variant="tonal"
+        block
+      >
         Save
       </v-btn>
     </v-form>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup lang="ts">

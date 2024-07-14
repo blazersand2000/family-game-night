@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="12" sm="6" md="4">
         <div class="tic-tac-toe-board">
-          <btn
+          <button
             v-for="(cell, index) in cells"
             :key="index"
             class="tic-tac-toe-cell"
@@ -11,7 +11,7 @@
           >
             <!-- Display X or O based on the cell's state -->
             {{ cell }}
-          </btn>
+          </button>
         </div>
       </v-col>
     </v-row>

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '@/stores/useAuthStore'
 import type { ErrorViewProps } from '@/types/errorViewProps'
-import { computed } from 'vue'
+import { watch, watchEffect } from 'vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,23 +44,45 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from) => {
   const authStore = useAuthStore()
-  const currentUser = computed(() => authStore.currentUser)
 
-  if (!currentUser.value) {
+  await waitForAuthInitialization()
+
+  if (!authStore.currentUser) {
     if (to.name !== 'error') {
-      console.log('User is not authenticated, redirecting to error')
-      return next({ name: 'error' })
-    } else {
-      return
+      return { name: 'error' }
     }
+    return true
   }
-  if (!currentUser.value.displayName && to.name !== 'enterUserDetails') {
-    console.log('User has no name, redirecting to enterUserDetails')
-    return next({ name: 'enterUserDetails', query: { redirect: to.fullPath } })
+
+  if (!authStore.currentUser.displayName && to.name !== 'enterUserDetails') {
+    return { name: 'enterUserDetails', query: { redirect: to.fullPath } }
   }
-  return next()
+
+  if (authStore.currentUser.displayName && to.name === 'enterUserDetails') {
+    return false
+  }
 })
+
+async function waitForAuthInitialization() {
+  const authStore = useAuthStore()
+
+  if (authStore.isAuthInitialized) {
+    return true
+  }
+
+  return new Promise((resolve) => {
+    const stop = watch(
+      () => authStore.isAuthInitialized,
+      (isInitialized) => {
+        if (isInitialized) {
+          stop()
+          resolve(true)
+        }
+      }
+    )
+  })
+}
 
 export default router
