@@ -2,25 +2,53 @@ import { getFirestore, FieldValue, WithFieldValue, DocumentData } from "firebase
 import { CreateGameRequest } from "shared/requests/game"
 import { ReceivedRequest } from "@/mediation"
 import { generateSecureUniqueId } from "./idGenerationService"
+import { CreateGameLobbyRequest, JoinGameLobbyResponse } from "shared/requests/gameLobby"
+import { GameLobby } from "shared/models/gameLobby"
+import { GenericResponse } from "shared/shared"
 
 const db = getFirestore()
+
+export async function createGameLobby(
+   request: ReceivedRequest<CreateGameLobbyRequest>
+): Promise<string> {
+   const id = generateSecureUniqueId()
+
+   const gameLobbyRef = db.collection("gameLobbies").doc(id)
+
+   await gameLobbyRef.set({
+      createdAt: FieldValue.serverTimestamp(),
+      creatorId: request.context.auth!.uid,
+      playerIds: [request.context.auth!.uid],
+      currentGameId: null,
+   })
+
+   return id
+}
+
+export async function joinGameLobby(
+   gameLobbyId: string,
+   updateCallback: UpdateCallback<GameLobby, GenericResponse<JoinGameLobbyResponse>>
+): Promise<GenericResponse<JoinGameLobbyResponse>> {
+   return updateDocument<GameLobby, GenericResponse<JoinGameLobbyResponse>>(
+      "gameLobbies",
+      gameLobbyId,
+      updateCallback
+   )
+}
 
 export async function createGame<T extends WithFieldValue<DocumentData>>(
    request: ReceivedRequest<CreateGameRequest>,
    gameData: T
 ): Promise<string> {
-   const id = generateSecureUniqueId()
-
    const batch = db.batch()
 
-   const gameRef = db.collection("games").doc(id)
+   const gameRef = db.collection("games").doc()
    const gameDataRef = db.collection("gameData").doc(gameRef.id)
 
    const game = {
       ...request.payload,
       createdAt: FieldValue.serverTimestamp(),
       gameManagerId: request.context.auth!.uid,
-      playerIds: [request.context.auth!.uid],
    }
 
    batch.set(gameRef, game)
@@ -33,12 +61,20 @@ export async function createGame<T extends WithFieldValue<DocumentData>>(
 
 export async function updateGameData<T extends WithFieldValue<DocumentData>, TResponse>(
    gameId: string,
-   updateCallback: (current: T | null, update: (newData: T) => void) => TResponse
+   updateCallback: UpdateCallback<T, TResponse>
 ): Promise<TResponse> {
-   const gameDataRef = db.collection("gameData").doc(gameId)
+   return updateDocument<T, TResponse>("gameData", gameId, updateCallback)
+}
+
+async function updateDocument<T extends WithFieldValue<DocumentData>, TResponse>(
+   collection: string,
+   id: string,
+   updateCallback: (current: T | null, update: (newData: T) => void) => TResponse
+) {
+   const documentRef = db.collection(collection).doc(id)
    return await db.runTransaction(async (transaction) => {
-      const gameDataDoc = await transaction.get(gameDataRef)
-      const currentData = gameDataDoc.exists ? (gameDataDoc.data() as T) : null
+      const document = await transaction.get(documentRef)
+      const currentData = document.exists ? (document.data() as T) : null
 
       let updatedData: T | undefined
 
@@ -57,8 +93,13 @@ export async function updateGameData<T extends WithFieldValue<DocumentData>, TRe
       }
 
       // Proceed with the update using the modified data
-      await transaction.update(gameDataRef, updatedData)
+      await transaction.update(documentRef, updatedData)
 
       return result
    })
 }
+
+type UpdateCallback<T extends WithFieldValue<DocumentData>, TResponse> = (
+   current: T | null,
+   update: (newData: T) => void
+) => TResponse

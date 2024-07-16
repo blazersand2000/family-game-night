@@ -2,6 +2,7 @@ import { GameType } from "../models/gameType"
 
 export interface CreateGameRequest {
    type: GameType
+   gameLobbyId: string
 }
 
 export interface CreateGameResponse {

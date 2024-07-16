@@ -1,0 +1,12 @@
+import { WithFieldValue, DocumentData } from "firebase-admin/firestore";
+import { CreateGameRequest } from "shared/requests/game";
+import { ReceivedRequest } from "@/mediation";
+import { CreateGameLobbyRequest, JoinGameLobbyResponse } from "shared/requests/gameLobby";
+import { GameLobby } from "shared/models/gameLobby";
+import { GenericResponse } from "shared/shared";
+export declare function createGameLobby(request: ReceivedRequest<CreateGameLobbyRequest>): Promise<string>;
+export declare function joinGameLobby(gameLobbyId: string, updateCallback: UpdateCallback<GameLobby, GenericResponse<JoinGameLobbyResponse>>): Promise<GenericResponse<JoinGameLobbyResponse>>;
+export declare function createGame<T extends WithFieldValue<DocumentData>>(request: ReceivedRequest<CreateGameRequest>, gameData: T): Promise<string>;
+export declare function updateGameData<T extends WithFieldValue<DocumentData>, TResponse>(gameId: string, updateCallback: UpdateCallback<T, TResponse>): Promise<TResponse>;
+type UpdateCallback<T extends WithFieldValue<DocumentData>, TResponse> = (current: T | null, update: (newData: T) => void) => TResponse;
+export {};

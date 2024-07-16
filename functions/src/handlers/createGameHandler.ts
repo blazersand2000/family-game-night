@@ -10,7 +10,6 @@ export class CreateGameHandler implements RequestHandler<CreateGameRequest, Crea
       request: ReceivedRequest<CreateGameRequest>
    ): Promise<GenericResponse<CreateGameResponse>> {
       if (request.payload.type === GameType.TicTacToe) {
-         // TODO: get rid of nested arrays firestore doesn't support them
          const gameData: TicTacToe = {
             board: {
                0: [null, null, null],
