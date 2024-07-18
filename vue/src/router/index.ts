@@ -63,6 +63,7 @@ router.beforeEach(async (to, from) => {
   console.log('CURRENT USER STORE USER', userStore.currentUser)
 
   if (!userStore.currentUser?.displayName && to.name !== 'enterUserDetails') {
+    console.log('redirecting to enterUserDetails')
     return { name: 'enterUserDetails', query: { redirect: to.fullPath } }
   }
   console.log(userStore.currentUser?.displayName, to.name)
