@@ -1,12 +1,13 @@
 import './assets/main.css'
 
+import { firebaseApp } from './firebaseConfig'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
 import { VueFire, VueFireAuth } from 'vuefire'
-import { firebaseApp } from './firebaseConfig'
 
 // Vuetify
 import 'vuetify/styles'

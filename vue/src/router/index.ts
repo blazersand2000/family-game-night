@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '@/stores/useAuthStore'
 import type { ErrorViewProps } from '@/types/errorViewProps'
-import { watch, watchEffect } from 'vue'
+import { watch } from 'vue'
+import { useUserStore } from '@/stores/useUserStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,9 +19,9 @@ const router = createRouter({
       component: () => import('../views/EnterUserDetailsView.vue')
     },
     {
-      path: '/games/:gameId',
-      name: 'game',
-      component: () => import('../views/GameView.vue'),
+      path: '/games/:gameLobbyId',
+      name: 'gameLobby',
+      component: () => import('../views/GameLobbyView.vue'),
       props: true
     },
     {
@@ -45,9 +46,10 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-  const authStore = useAuthStore()
-
   await waitForAuthInitialization()
+
+  const authStore = useAuthStore()
+  console.log('CURRENT USER', authStore.currentUser)
 
   if (!authStore.currentUser) {
     if (to.name !== 'error') {
@@ -56,11 +58,16 @@ router.beforeEach(async (to, from) => {
     return true
   }
 
-  if (!authStore.currentUser.displayName && to.name !== 'enterUserDetails') {
+  const userStore = useUserStore()
+  await userStore.awaitCurrentUser()
+  console.log('CURRENT USER STORE USER', userStore.currentUser)
+
+  if (!userStore.currentUser?.displayName && to.name !== 'enterUserDetails') {
     return { name: 'enterUserDetails', query: { redirect: to.fullPath } }
   }
-
-  if (authStore.currentUser.displayName && to.name === 'enterUserDetails') {
+  console.log(userStore.currentUser?.displayName, to.name)
+  if (userStore.currentUser?.displayName && to.name === 'enterUserDetails') {
+    console.log('redirecting to home')
     return false
   }
 })

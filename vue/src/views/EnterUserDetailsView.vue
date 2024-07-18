@@ -17,13 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/useAuthStore'
+import { useUserStore } from '@/stores/useUserStore'
 
 const router = useRouter()
 const route = useRoute()
-const authStore = useAuthStore()
+const userStore = useUserStore()
 
 const firstName = ref('')
 const isSubmitting = ref(false)
@@ -41,7 +41,7 @@ const handleSubmit = async () => {
   }
 
   isSubmitting.value = true
-  await authStore.updateName(firstName.value)
+  await userStore.updateName(firstName.value)
   router.push((route.query.redirect as string) || '/')
   isSubmitting.value = false
 }

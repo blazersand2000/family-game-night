@@ -15,26 +15,24 @@ import { ref, defineProps, computed } from 'vue'
 import { mdiAccountPlus, mdiShareVariant } from '@mdi/js'
 import { useShare, type UseShareOptions } from '@vueuse/core'
 import { useRouter } from 'vue-router'
-import type { GameType } from 'shared/models/gameType'
 
 const props = defineProps<{
-  gameType: GameType
-  gameId: string
+  inviterName: string
+  gameLobbyId: string
 }>()
 
 const router = useRouter()
 const { share, isSupported } = useShare()
 
-const shareText = computed(() => `Join me for a fun game of ${props.gameType}!`)
-
 const gameUrl = computed(
   () =>
     router.resolve({
-      name: 'game',
-      params: { gameId: props.gameId }
+      name: 'gameLobby',
+      params: { gameLobbyId: props.gameLobbyId }
     }).href
 )
 
+const shareText = computed(() => `${props.inviterName} is inviting you to play!`)
 const shareOptions = ref<UseShareOptions>({
   title: 'Family Game Night',
   text: shareText.value,

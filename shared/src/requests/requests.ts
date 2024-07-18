@@ -12,8 +12,10 @@ import {
    JoinGameLobbyResponse,
 } from "./gameLobby"
 import type { TicTacToe_MakeMoveRequest, TicTacToe_MakeMoveResponse } from "./tictactoe"
+import { UpdateProfileRequest, UpdateProfileResponse } from "./user"
 
 export type RequestResponseMapping = {
+   UpdateProfile: RequestResponsePair<UpdateProfileRequest, UpdateProfileResponse>
    CreateGameLobby: RequestResponsePair<CreateGameLobbyRequest, CreateGameLobbyResponse>
    JoinGameLobby: RequestResponsePair<JoinGameLobbyRequest, JoinGameLobbyResponse>
    CreateGame: RequestResponsePair<CreateGameRequest, CreateGameResponse>

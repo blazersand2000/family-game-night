@@ -5,6 +5,7 @@ import { JoinGameHandler } from "./handlers/joinGameHandler"
 import { TicTacToe_MakeMoveHandler } from "./handlers/tictactoe/makeMoveHandler"
 import { CreateGameLobbyHandler } from "./handlers/createGameLobbyHandler"
 import { JoinGameLobbyHandler } from "./handlers/joinGameLobbyHandler"
+import { UpdateProfileHandler } from "./handlers/updateProfileHandler"
 
 // Request with context
 export interface ReceivedRequest<TRequest> extends GenericRequest<TRequest> {
@@ -18,6 +19,7 @@ export interface RequestHandler<TRequest, TResponse> {
 
 // Map request IDs to their handlers
 export const handlers: Record<RequestId, RequestHandler<AllRequests, any>> = {
+   UpdateProfile: new UpdateProfileHandler(),
    CreateGameLobby: new CreateGameLobbyHandler(),
    JoinGameLobby: new JoinGameLobbyHandler(),
    CreateGame: new CreateGameHandler(),

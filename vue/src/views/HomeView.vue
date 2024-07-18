@@ -1,15 +1,11 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="300">
-      <v-list :items="gamesList"></v-list>
+      <v-list :items="gameLobbiesList"></v-list>
     </v-card>
 
     <div>
-      <button @click="Create">Test Create Game</button>
-      <button @click="Join">Test Join Game</button>
-    </div>
-    <div>
-      {{ currentUser === null ? 'Not logged in' : 'Logged in' }}
+      <button @click="Create">Create Game</button>
     </div>
 
     <div v-if="error">Error: {{ error.message }}</div>
@@ -18,37 +14,30 @@
 
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
-import { useGameApi } from '@/composables/useGameApi'
+import { useGameLobbyApi } from '@/composables/useGameLobbyApi'
 import { useLogger } from '@/composables/useLogger'
-import { useGameStore } from '@/stores/useGameStore'
+import { useGameLobbyStore } from '@/stores/useGameLobbyStore'
 import { useAuthStore } from '@/stores/useAuthStore'
-import { GameType } from 'shared/models/gameType'
+import { storeToRefs } from 'pinia'
 
 const logger = useLogger()
-const gameApi = useGameApi()
-const { games } = toRefs(useGameStore())
-const { auth, currentUser, error } = toRefs(useAuthStore())
+const gameLobbyApi = useGameLobbyApi()
+const { error } = toRefs(useAuthStore())
+const { myGameLobbies } = storeToRefs(useGameLobbyStore())
 
-const gamesList = computed(() => {
-  return games.value.map((game) => ({
-    title: game.id,
-    value: game.id,
-    props: { to: { name: 'game', params: { gameId: game.id } } }
+const gameLobbiesList = computed(() => {
+  return myGameLobbies.value.map((lobby) => ({
+    title: lobby.id,
+    value: lobby.id,
+    props: { to: { name: 'gameLobby', params: { gameLobbyId: lobby.id } } }
   }))
 })
 
 const Create = async () => {
-  var createResult = await gameApi.createGame({
-    type: GameType.TicTacToe
-  })
+  var createResult = await gameLobbyApi.createGameLobby({})
   logger.log(createResult)
-}
-
-const Join = async () => {
-  var joinResult = await gameApi.joinGame({
-    gameId: '123',
-    userId: 'user789'
-  })
-  logger.log(joinResult)
+  if (!createResult) {
+    return
+  }
 }
 </script>

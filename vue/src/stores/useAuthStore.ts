@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useFirebaseAuth, useCurrentUser } from 'vuefire'
 import { computed, ref, watch } from 'vue'
-import { signInAnonymously, updateProfile } from 'firebase/auth'
+import { signInAnonymously } from 'firebase/auth'
 import type { AuthError } from 'firebase/auth'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -36,13 +36,5 @@ export const useAuthStore = defineStore('auth', () => {
     _isAuthInitialized.value = true
   }
 
-  const updateName = async (name: string) => {
-    if (currentUser.value) {
-      await updateProfile(currentUser.value, {
-        displayName: name
-      })
-    }
-  }
-
-  return { auth, currentUser, isAuthInitialized, error, initAuth, updateName }
+  return { auth, currentUser, isAuthInitialized, error, initAuth }
 })

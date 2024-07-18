@@ -25,6 +25,7 @@
           <v-list-item title="Navigation drawer"
             >Logged in? {{ !!authStore.currentUser }}</v-list-item
           >
+          <v-list-item title="Navigation drawer">Name: {{ userStore.currentUser }}</v-list-item>
         </v-list>
       </v-navigation-drawer>
 
@@ -36,43 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useTodoStore } from '@/stores/useTodoStore'
-import { useGameApi } from '@/composables/useGameApi'
-import { useLogger } from './composables/useLogger'
 import ThemeManager from './components/ThemeManager.vue'
-import { GameType } from 'shared/models/gameType'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { useUserStore } from '@/stores/useUserStore'
 
 const authStore = useAuthStore()
-const logger = useLogger()
-const todoStore = useTodoStore()
-// Use computed to create a computedRef for todos
-const todos = computed(() => todoStore.todos)
-const { addTodo } = todoStore // Destructure methods directly from the store
-const newTodo = ref('')
-
-const addNewTodo = () => {
-  if (newTodo.value.trim()) {
-    addTodo(newTodo.value.trim())
-    newTodo.value = ''
-  }
-}
-
-const gameApi = useGameApi()
-
-const Create = async () => {
-  var createResult = await gameApi.createGame({
-    type: GameType.TicTacToe
-  })
-  logger.log(createResult)
-}
-
-const Join = async () => {
-  var joinResult = await gameApi.joinGame({
-    gameId: '123',
-    userId: 'user789'
-  })
-  logger.log(joinResult)
-}
+const userStore = useUserStore()
 </script>

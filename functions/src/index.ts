@@ -26,12 +26,17 @@ db.settings(settings)
 
 export const gameAction = functions.https.onCall(
    async (data: GenericRequest<AllRequests>, context: functions.https.CallableContext) => {
-      if (!context.auth) {
-         throw new functions.https.HttpsError(
-            "unauthenticated",
-            "You must be authenticated to call this endpoint."
-         )
-      }
+      AssertAuthorized(context)
       return routeRequest({ ...data, context })
    }
 )
+
+function AssertAuthorized(context: functions.https.CallableContext) {
+   if (!context.auth) {
+      throw new functions.https.HttpsError(
+         "unauthenticated",
+         "You must be authenticated to call this endpoint."
+      )
+   }
+   // TODO: We should also ensure user is found in firestore and has a name set if we can ensure it's highly performant since it would be done on every request
+}
