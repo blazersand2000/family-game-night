@@ -19,9 +19,11 @@ import { useLogger } from '@/composables/useLogger'
 import { useGameLobbyStore } from '@/stores/useGameLobbyStore'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
 const logger = useLogger()
 const gameLobbyApi = useGameLobbyApi()
+const router = useRouter()
 const { error } = toRefs(useAuthStore())
 const { myGameLobbies } = storeToRefs(useGameLobbyStore())
 
@@ -34,10 +36,12 @@ const gameLobbiesList = computed(() => {
 })
 
 const Create = async () => {
-  var createResult = await gameLobbyApi.createGameLobby({})
-  logger.log(createResult)
-  if (!createResult) {
+  var result = await gameLobbyApi.createGameLobby({})
+  logger.log(result)
+  if (!result.success) {
     return
   }
+
+  router.push({ name: 'gameLobby', params: { gameLobbyId: result.payload.gameLobbyId } })
 }
 </script>

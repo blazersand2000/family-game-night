@@ -4,7 +4,7 @@
       <v-list-header>REPORTS</v-list-header>
 
       <v-list-item v-for="user in props.users" :key="user.id" :value="user" color="primary">
-        <v-list-item-title v-text="user.displayName"></v-list-item-title>
+        <v-list-item-title>{{ user.displayName }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-card>
